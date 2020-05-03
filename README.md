@@ -54,7 +54,9 @@ Ok, let's start with an installation - all you need to do is:
 
 Then if you use angular > 6.0.0 you need to install rxjs/operator (merge, filter,...) :
 
-import { filter } from 'rxjs/operators';
+`npm install --save rxjs-compat`
+
+and import: `import { filter, merge } from 'rxjs/operators';`
 
 Now when you have `ng2-tree` installed, you are in a few steps from having tree in your application:
 
