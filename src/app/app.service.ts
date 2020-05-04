@@ -10,8 +10,10 @@ export class AppService {
 
   tempsURL = 'http://localhost:3000/temps';
   abcURL = 'http://localhost:3000/abc';
+  tempList: any;
 
   constructor(private http: HttpClient) {
+    this.tempList = this.getTemps();
   }
 
   getTemps(): Observable<TreeModel> {
