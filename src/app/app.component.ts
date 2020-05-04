@@ -30,6 +30,7 @@ export class AppComponent implements OnInit {
   private lastFFSNodeId = 86;
 
   @ViewChild('treeFFS') public treeFFS;
+  @ViewChild('treeIcons') public treeIcon;
 
   public icons: any;
 
