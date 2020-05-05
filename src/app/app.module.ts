@@ -6,11 +6,12 @@ import {AppComponent} from './app.component';
 import {ButtonDirective} from './angular-ui-tree/button';
 import {TreeModule} from 'ng2-tree';
 import {HttpClientModule} from '@angular/common/http';
+import {SafeHtmlPipe} from './angular-ui-tree/utils/safe-html.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ButtonDirective
+    ButtonDirective,
   ],
   imports: [
     BrowserModule,

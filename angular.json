@@ -25,9 +25,8 @@
             ],
             "styles": [
               "src/styles.css",
-              "node_modules/alertifyjs/build/css/alertify.css",
-              "node_modules/alertifyjs/build/css/themes/default.css",
-              "node_modules/font-awesome/css/font-awesome.min.css"
+              "node_modules/font-awesome/css/font-awesome.css",
+              "node_modules/bootstrap-css-only/css/bootstrap.css"
             ],
             "scripts": []
           },
@@ -122,6 +121,12 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-tree-baonkg"
+    }
+  },
+  "defaultProject": "angular-tree-baonkg",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "css"
+    }
+  }
 }

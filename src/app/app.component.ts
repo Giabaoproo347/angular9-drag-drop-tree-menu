@@ -12,12 +12,12 @@ declare const alertify: any;
 export class AppComponent implements OnInit {
   public settings: Ng2TreeSettings = {
     rootIsVisible: false,
-    showCheckboxes: true
+    showCheckboxes: false
   };
 
   public disabledCheckboxesSettings: Ng2TreeSettings = {
     rootIsVisible: false,
-    showCheckboxes: true,
+    showCheckboxes: false,
     enableCheckboxes: false
   };
 
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   @ViewChild('treeFFS') public treeFFS;
   @ViewChild('treeIcons') public treeIcon;
 
-  public icons: any;
+  public icons: TreeModel;
 
 
   private static logEvent(e: NodeEvent, message: string): void {
@@ -105,7 +105,7 @@ export class AppComponent implements OnInit {
   }
 
   public renameFFS(id: number | string) {
-    const treeController = this.treeFFS.getControllerByNodeId(id);
+    const treeController = this.treeIcon.getControllerByNodeId(id);
     if (treeController) {
       treeController.rename('unicode.pf');
     } else {
