@@ -1,16 +1,15 @@
-import './rxjs-imports';
 
 import { NgModule } from '@angular/core';
 import { TreeComponent } from './tree.component';
 import { TreeInternalComponent } from './tree-internal.component';
 import { CommonModule } from '@angular/common';
 import { TreeService } from './tree.service';
-import {NodeDraggableDirective} from 'ng2-tree/src/draggable/node-draggable.directive';
-import {NodeEditableDirective} from 'ng2-tree/src/editable/node-editable.directive';
-import {NodeMenuComponent} from 'ng2-tree/src/menu/node-menu.component';
-import {SafeHtmlPipe} from 'ng2-tree/src/utils/safe-html.pipe';
-import {NodeDraggableService} from 'ng2-tree/src/draggable/node-draggable.service';
-import {NodeMenuService} from 'ng2-tree/src/menu/node-menu.service';
+import {NodeDraggableDirective} from './draggable/node-draggable.directive';
+import {NodeEditableDirective} from './editable/node-editable.directive';
+import {NodeMenuComponent} from './menu/node-menu.component';
+import {SafeHtmlPipe} from './utils/safe-html.pipe';
+import {NodeDraggableService} from './draggable/node-draggable.service';
+import {NodeMenuService} from './menu/node-menu.service';
 
 @NgModule({
   imports: [CommonModule],

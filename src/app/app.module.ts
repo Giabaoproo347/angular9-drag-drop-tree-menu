@@ -4,9 +4,8 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {ButtonDirective} from './angular-ui-tree/button';
-import {TreeModule} from 'ng2-tree';
 import {HttpClientModule} from '@angular/common/http';
-import {SafeHtmlPipe} from './angular-ui-tree/utils/safe-html.pipe';
+import {TreeModule} from './angular-ui-tree/tree.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,7 @@ import {SafeHtmlPipe} from './angular-ui-tree/utils/safe-html.pipe';
     BrowserModule,
     AppRoutingModule,
     TreeModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

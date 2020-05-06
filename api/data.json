@@ -1,6 +1,5 @@
 {
   "temps": {
-    "value": "Icons",
     "children": [
       {
         "value": "Web Application Icons",
@@ -111,7 +110,6 @@
     ]
   },
   "abc": {
-    "value": "Icons",
     "children": [
       {
         "value": "Web Application Icons",

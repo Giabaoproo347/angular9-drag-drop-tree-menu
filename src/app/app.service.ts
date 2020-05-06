@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {TreeModel} from './angular-ui-tree/tree.types';
 import {Observable} from 'rxjs';
-import {TreeModel} from 'ng2-tree';
 
 @Injectable({
   providedIn: 'root'
