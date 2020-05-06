@@ -39,7 +39,7 @@ export class TreeController {
 
   public expandToParent(tree: any = this.tree): void {
     if (tree) {
-      const controller = this.treeService.getController(tree.id);
+      const controller = this.treeService.getController(tree.mnuItemId);
       if (controller) {
         requestAnimationFrame(() => {
           controller.expand();
@@ -105,16 +105,16 @@ export class TreeController {
 
   public changeNodeId(id: string | number): void {
     if (!id) {
-      throw Error('You should supply an id!');
+      throw Error('You should supply an mnuItemId!');
     }
 
     if (this.treeService.hasController(id)) {
       throw Error(`Controller already exists for the given id: ${id}`);
     }
 
-    this.treeService.deleteController(this.tree.id);
-    this.tree.id = id;
-    this.treeService.setController(this.tree.id, this);
+    this.treeService.deleteController(this.tree.mnuItemId);
+    this.tree.mnuItemId = id;
+    this.treeService.setController(this.tree.mnuItemId, this);
   }
 
   public reloadChildren(): void {

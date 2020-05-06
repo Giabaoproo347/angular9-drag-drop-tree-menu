@@ -6,14 +6,23 @@
     </div>
     <div class="tree-content">
       <tree #treeFFS [tree]="ffs">
-<!--            (nodeRemoved)="onNodeRemoved($event)"-->
-<!--            (nodeRenamed)="onNodeRenamed($event)"-->
-<!--            (nodeSelected)="onNodeSelected($event)"-->
-<!--            (nodeUnselected)="onNodeUnselected($event)"-->
-<!--            (nodeMoved)="onNodeMoved($event)"-->
-<!--            (nodeExpanded)="onNodeExpanded($event)"-->
-<!--            (nodeCollapsed)="onNodeCollapsed($event)"-->
-<!--            [settings]="disabledCheckboxesSettings">-->
+        <!--            (nodeRemoved)="onNodeRemoved($event)"-->
+        <!--            (nodeRenamed)="onNodeRenamed($event)"-->
+        <!--            (nodeSelected)="onNodeSelected($event)"-->
+        <!--            (nodeUnselected)="onNodeUnselected($event)"-->
+        <!--            (nodeMoved)="onNodeMoved($event)"-->
+        <!--            (nodeExpanded)="onNodeExpanded($event)"-->
+        <!--            (nodeCollapsed)="onNodeCollapsed($event)"-->
+        <!--            [settings]="disabledCheckboxesSettings">-->
+        <ng-template let-node>
+          <span *ngIf="node.img"><img src="{{node.img}}" alt="image" style="height: 30px">{{node.menuGroup.mnuName}}</span>
+          <br/>
+          <i class="fa {{node.icon}}"></i>
+          <a href="{{node.uri}}">
+            <span *ngIf="node.nameVi" [innerHTML]="node.nameVi"></span>
+          </a>
+          <br/>
+        </ng-template>
       </tree>
     </div>
   </div>
@@ -25,15 +34,19 @@
     </div>
     <div class="tree-content">
       <tree #treeIcons [tree]="icons">
-<!--            (nodeRemoved)="onNodeRemoved($event)"-->
-<!--            (nodeRenamed)="onNodeRenamed($event)"-->
-<!--            (nodeSelected)="onNodeSelected($event)"-->
-<!--            (nodeMoved)="onNodeMoved($event)"-->
-<!--            (nodeCreated)="onNodeCreated($event)">-->
-        <ng-template let-abc >
-          <span *ngIf="abc.image"><img src="{{abc.image}}" alt="image" style="height: 30px"></span>
-          <i *ngIf="abc.icon" class="fa {{abc.icon}}" ></i>
-          <a href="{{abc.uri}}"><span class="node-name" [innerHTML]="abc.value"></span></a>
+        <!--            (nodeRemoved)="onNodeRemoved($event)"-->
+        <!--            (nodeRenamed)="onNodeRenamed($event)"-->
+        <!--            (nodeSelected)="onNodeSelected($event)"-->
+        <!--            (nodeMoved)="onNodeMoved($event)"-->
+        <!--            (nodeCreated)="onNodeCreated($event)">-->
+        <ng-template let-node>
+          <span *ngIf="node.img"><img src="{{node.img}}" alt="image" style="height: 30px">{{node.menuGroup.mnuName}}</span>
+          <br/>
+          <i class="fa {{node.icon}}"></i>
+          <a href="{{node.uri}}">
+            <span *ngIf="node.nameVi" [innerHTML]="node.nameVi"></span>
+          </a>
+          <br/>
         </ng-template>
       </tree>
     </div>

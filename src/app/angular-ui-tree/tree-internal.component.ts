@@ -1,83 +1,87 @@
-import {AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit,
-  SimpleChanges, TemplateRef, ViewChild} from '@angular/core';
+import {
+  AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit,
+  SimpleChanges, TemplateRef, ViewChild
+} from '@angular/core';
 
 import * as TreeTypes from './tree.types';
-import { Ng2TreeSettings } from './tree.types';
-import { Tree } from './tree';
-import { TreeController } from './tree-controller';
-import { NodeMenuService } from './menu/node-menu.service';
-import { NodeMenuItemAction, NodeMenuItemSelectedEvent } from './menu/menu.events';
-import { NodeEditableEvent, NodeEditableEventAction } from './editable/editable.events';
-import { NodeCheckedEvent, NodeEvent } from './tree.events';
-import { TreeService } from './tree.service';
+import {Ng2TreeSettings, TreeModel} from './tree.types';
+import {Tree} from './tree';
+import {TreeController} from './tree-controller';
+import {NodeMenuService} from './menu/node-menu.service';
+import {NodeMenuItemAction, NodeMenuItemSelectedEvent} from './menu/menu.events';
+import {NodeEditableEvent, NodeEditableEventAction} from './editable/editable.events';
+import {NodeCheckedEvent, NodeEvent} from './tree.events';
+import {TreeService} from './tree.service';
 import * as EventUtils from './utils/event.utils';
-import { NodeDraggableEvent } from './draggable/draggable.events';
-import { get, isNil } from './utils/fn.utils';
-import { Subscription } from 'rxjs';
-import { filter, merge } from 'rxjs/operators';
+import {NodeDraggableEvent} from './draggable/draggable.events';
+import {get, isNil} from './utils/fn.utils';
+import {Subscription} from 'rxjs';
+import {filter, merge} from 'rxjs/operators';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'tree-internal',
   template: `
-  <ul class="tree" *ngIf="tree" [ngClass]="{rootless: isRootHidden()}">
-    <li>
-      <div class="value-container"
-        [ngClass]="{rootless: isRootHidden()}"
-        [class.selected]="isSelected"
-        (contextmenu)="showRightMenu($event)"
-        [nodeDraggable]="nodeElementRef"
-        [tree]="tree">
+    <ul class="tree" *ngIf="tree" [ngClass]="{rootless: isRootHidden()}">
+      <li>
+        <div class="value-container"
+             [ngClass]="{rootless: isRootHidden()}"
+             [class.selected]="isSelected"
+             (contextmenu)="showRightMenu($event)"
+             [nodeDraggable]="nodeElementRef"
+             [tree]="tree">
 
-        <div class="folding" (click)="onSwitchFoldingType()" [ngClass]="tree.foldingCssClass"></div>
+          <div class="folding" (click)="onSwitchFoldingType()" [ngClass]="tree.foldingCssClass"></div>
 
-        <div class="node-checkbox" *ngIf="settings.showCheckboxes">
-        <input  type="checkbox" [disabled]="isReadOnly" [checked]="this.tree.checked" (change)="switchNodeCheckStatus()" #checkbox />
-         </div>
+          <div class="node-checkbox" *ngIf="settings.showCheckboxes">
+            <input type="checkbox" [disabled]="isReadOnly" [checked]="this.tree.checked" (change)="switchNodeCheckStatus()" #checkbox/>
+          </div>
 
-        <div class="node-value"
-          *ngIf="!shouldShowInputForTreeValue()"
-          [class.node-selected]="isSelected"
-          (click)="onNodeSelected($event)">
+          <div class="node-value"
+               *ngIf="!shouldShowInputForTreeValue()"
+               [class.node-selected]="isSelected"
+               (click)="onNodeSelected($event)">
             <div *ngIf="tree.nodeTemplate" class="node-template" [innerHTML]="tree.nodeTemplate | safeHtml"></div>
             <span *ngIf="!template" class="node-name" [innerHTML]="tree.value | safeHtml"></span>
             <span class="loading-children" *ngIf="tree.childrenAreBeingLoaded()"></span>
             <ng-template [ngTemplateOutlet]="template" [ngTemplateOutletContext]="{ $implicit: tree.node }"></ng-template>
+          </div>
+
+          <input type="text" class="node-value"
+                 *ngIf="shouldShowInputForTreeValue()"
+                 [nodeEditable]="tree.value"
+                 (valueChanged)="applyNewValue($event)"/>
+
+          <div class="node-left-menu" *ngIf="tree.hasLeftMenu()" (click)="showLeftMenu($event)" [innerHTML]="tree.leftMenuTemplate">
+          </div>
+          <node-menu *ngIf="tree.hasLeftMenu() && isLeftMenuVisible && !hasCustomMenu()"
+                     (menuItemSelected)="onMenuItemSelected($event)">
+          </node-menu>
         </div>
 
-        <input type="text" class="node-value"
-           *ngIf="shouldShowInputForTreeValue()"
-           [nodeEditable]="tree.value"
-           (valueChanged)="applyNewValue($event)"/>
-
-        <div class="node-left-menu" *ngIf="tree.hasLeftMenu()" (click)="showLeftMenu($event)" [innerHTML]="tree.leftMenuTemplate">
-        </div>
-        <node-menu *ngIf="tree.hasLeftMenu() && isLeftMenuVisible && !hasCustomMenu()"
-          (menuItemSelected)="onMenuItemSelected($event)">
+        <node-menu *ngIf="isRightMenuVisible && !hasCustomMenu()"
+                   (menuItemSelected)="onMenuItemSelected($event)">
         </node-menu>
-      </div>
 
-      <node-menu *ngIf="isRightMenuVisible && !hasCustomMenu()"
-           (menuItemSelected)="onMenuItemSelected($event)">
-      </node-menu>
+        <node-menu *ngIf="hasCustomMenu() && (isRightMenuVisible || isLeftMenuVisible)"
+                   [menuItems]="tree.menuItems"
+                   (menuItemSelected)="onMenuItemSelected($event)">
+        </node-menu>
 
-      <node-menu *ngIf="hasCustomMenu() && (isRightMenuVisible || isLeftMenuVisible)"
-           [menuItems]="tree.menuItems"
-           (menuItemSelected)="onMenuItemSelected($event)">
-      </node-menu>
-
-      <div *ngIf="tree.keepNodesInDOM()" [ngStyle]="{'display': tree.isNodeExpanded() ? 'block' : 'none'}">
-        <tree-internal *ngFor="let child of tree.childrenAsync | async" [tree]="child" [template]="template" [settings]="settings"></tree-internal>
-      </div>
-      <ng-template [ngIf]="tree.isNodeExpanded() && !tree.keepNodesInDOM()">
-        <tree-internal *ngFor="let child of tree.childrenAsync | async" [tree]="child" [template]="template" [settings]="settings"></tree-internal>
-      </ng-template>
-    </li>
-  </ul>
+        <div *ngIf="tree.keepNodesInDOM()" [ngStyle]="{'display': tree.isNodeExpanded() ? 'block' : 'none'}">
+          <tree-internal *ngFor="let child of tree.childrenAsync | async" [tree]="child" [template]="template"
+                         [settings]="settings"></tree-internal>
+        </div>
+        <ng-template [ngIf]="tree.isNodeExpanded() && !tree.keepNodesInDOM()">
+          <tree-internal *ngFor="let child of tree.childrenAsync | async" [tree]="child" [template]="template"
+                         [settings]="settings"></tree-internal>
+        </ng-template>
+      </li>
+    </ul>
   `
 })
 export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
-  @Input() public tree: Tree | any;
+  @Input() public tree: TreeModel | any;
 
   @Input() public settings: TreeTypes.Ng2TreeSettings | any;
 
@@ -97,7 +101,8 @@ export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, Afte
     private nodeMenuService: NodeMenuService,
     public treeService: TreeService,
     public nodeElementRef: ElementRef
-  ) {}
+  ) {
+  }
 
   public ngAfterViewInit(): void {
     if (this.tree.checked && !(this.tree as any).firstCheckedFired) {
@@ -107,7 +112,7 @@ export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   public ngOnInit(): void {
-    const nodeId = get(this.tree, 'node.id', '');
+    const nodeId = get(this.tree, 'node.mnuItemId', '');
     if (nodeId) {
       this.controller = new TreeController(this);
       this.treeService.setController(nodeId, this.controller);
@@ -153,8 +158,8 @@ export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   public ngOnDestroy(): void {
-    if (get(this.tree, 'node.id', '')) {
-      this.treeService.deleteController(this.tree.node.id);
+    if (get(this.tree, 'node.mnuItemId', '')) {
+      this.treeService.deleteController(this.tree.node.mnuItemId);
     }
 
     this.subscriptions.forEach(sub => sub && sub.unsubscribe());
@@ -261,7 +266,7 @@ export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   private onRemoveSelected(): void {
-    this.treeService.deleteController(get(this.tree, 'node.id', ''));
+    this.treeService.deleteController(get(this.tree, 'node.mnuItemId', ''));
     this.treeService.fireNodeRemoved(this.tree);
   }
 
@@ -339,7 +344,7 @@ export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, Afte
   private executeOnChildController(executor: (controller: TreeController) => void): void {
     if (this.tree.hasLoadedChildern()) {
       this.tree.children.forEach((child: Tree) => {
-        const controller = this.treeService.getController(child.id);
+        const controller = this.treeService.getController(child.mnuItemId);
         if (!isNil(controller)) {
           executor(controller);
         }
@@ -368,9 +373,9 @@ export class TreeInternalComponent implements OnInit, OnChanges, OnDestroy, Afte
   }
 
   private eventContainsId(event: NodeEvent): boolean {
-    if (!event.node.id) {
+    if (!event.node.mnuItemId) {
       console.warn(
-        '"Node with checkbox" feature requires a unique id assigned to every node, please consider to add it.'
+        '"Node with checkbox" feature requires a unique mnuItemId assigned to every node, please consider to add it.'
       );
       return false;
     }

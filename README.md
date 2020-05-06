@@ -37,7 +37,7 @@
   * [startRenaming - changes the node template so that text input appears and lets a user type a new name](#startrenaming---changes-the-node-template-so-that-text-input-appears-and-lets-a-user-type-a-new-name)
   * [remove - removes a node from the tree](#remove---removes-a-node-from-the-tree)
   * [addChild - creates a new child node](#addchild---creates-a-new-child-node)
-  * [changeNodeId - changes node's id](#changenodeid---changes-nodes-id)
+  * [changeNodeId - changes node's mnuItemId](#changenodeid---changes-nodes-id)
   * [reloadChildren - loads async children once more](#reloadchildren---loads-async-children-once-more)
   * [setChildren - changes children of a node;](#setchildren---changes-children-of-a-node)
 * [SystemJS](#systemjs)
@@ -182,7 +182,7 @@ Here is the definition of the `TreeModel` interface:
 ```typescript
 interface TreeModel {
   value: string | RenamableNode;
-  id: string | number;
+  mnuItemId: string | number;
   children?: Array<TreeModel>;
   loadChildren?: ChildrenLoadingFunction;
   settings?: TreeModelSettings;
@@ -540,7 +540,7 @@ Relevant for loading children via ngrx (or any redux-inspired library).
 
 ## :gun: Controller
 
-First of all you should know how to get a controller of a particular node. You can get a controller of a node only if you set an id property of a node.
+First of all you should know how to get a controller of a particular node. You can get a controller of a node only if you set an mnuItemId property of a node.
 
 > TIP: Ids for nodes created via the context menu or using a TreeController instance get populated automatically unless nodes had ids before there were added to the tree
 
@@ -549,24 +549,24 @@ For example, your tree structure should look like:
 ```typescript
 public tree: TreeModel = {
     value: 'Programming languages by programming paradigm',
-    id: 1,
+    mnuItemId: 1,
     children: [
       {
         value: 'Object-oriented programming',
-        id: 2,
+        mnuItemId: 2,
         children: [
-          {value: 'Java', id: 3},
-          {value: 'C++', id: 4},
-          {value: 'C#', id 5},
+          {value: 'Java', mnuItemId: 3},
+          {value: 'C++', mnuItemId: 4},
+          {value: 'C#', mnuItemId 5},
         ]
       },
       {
         value: 'Prototype-based programming',
-        id: 6,
+        mnuItemId: 6,
         children: [
-          {value: 'JavaScript', id: 7},
-          {value: 'CoffeeScript', id: 8},
-          {value: 'Lua', id: 9},
+          {value: 'JavaScript', mnuItemId: 7},
+          {value: 'CoffeeScript', mnuItemId: 8},
+          {value: 'Lua', mnuItemId: 9},
         ]
       }
     ]
@@ -583,24 +583,24 @@ In order to get a node's controller you need to create an Angular local variable
 class TheComponent implements AfterViewInit {
   tree: TreeModel = {
     value: 'Programming languages by programming paradigm',
-    id: 1,
+    mnuItemId: 1,
     children: [
       {
         value: 'Object-oriented programming',
-        id: 2,
+        mnuItemId: 2,
         children: [
-          {value: 'Java', id: 3},
-          {value: 'C++', id: 4},
-          {value: 'C#', id 5},
+          {value: 'Java', mnuItemId: 3},
+          {value: 'C++', mnuItemId: 4},
+          {value: 'C#', mnuItemId 5},
         ]
       },
       {
         value: 'Prototype-based programming',
-        id: 6,
+        mnuItemId: 6,
         children: [
-          {value: 'JavaScript', id: 7},
-          {value: 'CoffeeScript', id: 8},
-          {value: 'Lua', id: 9},
+          {value: 'JavaScript', mnuItemId: 7},
+          {value: 'CoffeeScript', mnuItemId: 8},
+          {value: 'Lua', mnuItemId: 9},
         ]
       }
     ]
@@ -724,13 +724,13 @@ oopNodeController.addChild(newNode);
 
 This method accepts a TreeModel and adds it as a child of the parent or as a sibling (depends on which controller this was called - branch controller or a leaf controller).
 
-### changeNodeId - changes node's id
+### changeNodeId - changes node's mnuItemId
 
 ```typescript
 oopNodeController.changeNodeId(10);
 ```
 
-This method can change a node's id. When the user creates a node from node's menu you will access the new node after it's created and this method will provide a way to change the node's id.
+This method can change a node's mnuItemId. When the user creates a node from node's menu you will access the new node after it's created and this method will provide a way to change the node's mnuItemId.
 
 ### reloadChildren - loads async children once more
 

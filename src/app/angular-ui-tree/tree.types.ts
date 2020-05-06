@@ -19,13 +19,30 @@ export class FoldingType {
 export type ChildrenLoadingFunction = (callback: (children: TreeModel[]) => void) => void;
 
 export interface TreeModel {
-  value: string | RenamableNode;
-  id?: string | number;
+  mnuItemId?: string | number;
+  menuGroup?: {
+    mnuGrpId?: number;
+    mnuName?: string;
+    desc?: string;
+  };
+  nameVi?: string;
+  nameEn?: string;
+  icon?: string;
+  img?: string;
+  cssClass?: string;
+  isQuickMenu?: string;
+  parentId?: string;
   children?: TreeModel[];
+  lev?: string;
+  orderCode?: string;
+  roleCode?: string;
+  createdDate?: string;
+  createdBy?: string;
+  modifiedDate?: string;
+  modifiedBy?: string;
+
   loadChildren?: ChildrenLoadingFunction;
-  settings?: TreeModelSettings;
   emitLoadNextLevel?: boolean;
-  _status?: TreeStatus;
   _foldingType?: FoldingType;
 
   [additionalData: string]: any;

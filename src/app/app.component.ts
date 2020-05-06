@@ -94,64 +94,64 @@ export class AppComponent implements OnInit {
   //   AppComponent.logEvent(e, 'Collapsed');
   // }
   //
-  // public handleActionOnFFS(id: number | string, action: string) {
-  //   const treeController = this.treeFFS.getControllerByNodeId(id);
+  // public handleActionOnFFS(mnuItemId: number | string, action: string) {
+  //   const treeController = this.treeFFS.getControllerByNodeId(mnuItemId);
   //   if (treeController && typeof treeController[action] === 'function') {
   //     treeController[action]();
   //   } else {
-  //     console.log('There isn`t a controller for a node with id - ' + id);
+  //     console.log('There isn`t a controller for a node with mnuItemId - ' + mnuItemId);
   //   }
   // }
   //
-  // public renameFFS(id: number | string) {
-  //   const treeController = this.treeIcon.getControllerByNodeId(id);
+  // public renameFFS(mnuItemId: number | string) {
+  //   const treeController = this.treeIcon.getControllerByNodeId(mnuItemId);
   //   if (treeController) {
   //     treeController.rename('unicode.pf');
   //   } else {
-  //     console.log('There isn`t a controller for a node with id - ' + id);
+  //     console.log('There isn`t a controller for a node with mnuItemId - ' + mnuItemId);
   //   }
   // }
   //
-  // public setChildrenFFS(id: number | string) {
-  //   const treeController = this.treeFFS.getControllerByNodeId(id);
+  // public setChildrenFFS(mnuItemId: number | string) {
+  //   const treeController = this.treeFFS.getControllerByNodeId(mnuItemId);
   //   if (treeController && typeof treeController.setChildren === 'function') {
   //     treeController.setChildren([
-  //       {value: 'apache2', id: 82, children: []},
-  //       {value: 'nginx', id: 83, children: []},
-  //       {value: 'dhcp', id: 84, children: []},
-  //       {value: 'dpkg', id: 85, children: []},
-  //       {value: 'gdb', id: 86, children: []}
+  //       {value: 'apache2', mnuItemId: 82, children: []},
+  //       {value: 'nginx', mnuItemId: 83, children: []},
+  //       {value: 'dhcp', mnuItemId: 84, children: []},
+  //       {value: 'dpkg', mnuItemId: 85, children: []},
+  //       {value: 'gdb', mnuItemId: 86, children: []}
   //     ]);
   //   } else {
-  //     console.log('There isn`t a controller for a node with id - ' + id);
+  //     console.log('There isn`t a controller for a node with mnuItemId - ' + mnuItemId);
   //   }
   // }
   //
-  // public addChildFFS(id: number | string, newNode: TreeModel) {
-  //   newNode.id = ++this.lastFFSNodeId;
-  //   const treeController = this.treeFFS.getControllerByNodeId(id);
+  // public addChildFFS(mnuItemId: number | string, newNode: TreeModel) {
+  //   newNode.mnuItemId = ++this.lastFFSNodeId;
+  //   const treeController = this.treeFFS.getControllerByNodeId(mnuItemId);
   //   if (treeController) {
   //     treeController.addChild(newNode);
   //   } else {
-  //     console.log(`Controller is absent for a node with id: ${id}`);
+  //     console.log(`Controller is absent for a node with mnuItemId: ${mnuItemId}`);
   //   }
   // }
   //
-  // public checkFolder(id: number): void {
-  //   const treeController = this.treeFFS.getControllerByNodeId(id);
+  // public checkFolder(mnuItemId: number): void {
+  //   const treeController = this.treeFFS.getControllerByNodeId(mnuItemId);
   //   if (treeController) {
   //     treeController.check();
   //   } else {
-  //     console.log(`Controller is absent for a node with id: ${id}`);
+  //     console.log(`Controller is absent for a node with mnuItemId: ${mnuItemId}`);
   //   }
   // }
   //
-  // public uncheckFolder(id: number): void {
-  //   const treeController = this.treeFFS.getControllerByNodeId(id);
+  // public uncheckFolder(mnuItemId: number): void {
+  //   const treeController = this.treeFFS.getControllerByNodeId(mnuItemId);
   //   if (treeController) {
   //     treeController.uncheck();
   //   } else {
-  //     console.log(`Controller is absent for a node with id: ${id}`);
+  //     console.log(`Controller is absent for a node with mnuItemId: ${mnuItemId}`);
   //   }
   // }
 }

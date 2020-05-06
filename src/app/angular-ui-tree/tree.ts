@@ -57,8 +57,7 @@ export class Tree {
    * @param {any} value - A value to check.
    * @returns {boolean} - A flag indicating whether given value is Renamable node or not.
    * @static
-   */
-  public static isRenamable(value: any): value is RenamableNode {
+   */  public static isRenamable(value: any): value is RenamableNode {
     return (
       has(value, 'setName') &&
       isFunction(value.setName) &&
@@ -85,8 +84,8 @@ export class Tree {
    * @param {boolean} [isBranch] - An option that makes a branch from created tree. Branch can have children.
    */
   // @ts-ignore
-  public constructor(node: TreeModel, parent: Tree = null, isBranch: boolean = false) {
-    this.buildTreeFromModel(node, parent, isBranch || Array.isArray(node.children));
+  public constructor(model: TreeModel, parent: Tree = null, isBranch: boolean = false) {
+    this.buildTreeFromModel(model, parent, isBranch || Array.isArray(model.children));
   }
 
   private buildTreeFromModel(model: TreeModel, parent: Tree, isBranch: boolean): void {
@@ -204,11 +203,11 @@ export class Tree {
    */
   public createNode(isBranch: boolean, model: TreeModel = { value: '' }): Tree | any {
     const tree = new Tree(model, this, isBranch);
-    if (!model.id) {
+    if (!model.mnuItemId) {
       tree.markAsNew();
     }
 
-    tree.id = tree.id;
+    tree.mnuItemId = tree.mnuItemId;
 
     if (this.childrenShouldBeLoaded() && !(this.childrenAreBeingLoaded() || this.childrenWereLoaded())) {
       return null;
@@ -595,12 +594,12 @@ export class Tree {
     return this.node._status === TreeStatus.New;
   }
 
-  public get id(): number | string {
-    return get(this.node, 'id');
+  public get mnuItemId(): number | string {
+    return get(this.node, 'mnuItemId');
   }
 
-  public set id(id: number | string) {
-    this.node.id = id;
+  public set mnuItemId(id: number | string) {
+    this.node.mnuItemId = id;
   }
 
   /**
@@ -655,4 +654,10 @@ export class Tree {
 
     return model;
   }
+
+  public get mnuName(): string {
+    return this.node.menuGroup.mnuName
+  }
+
+  public get
 }
